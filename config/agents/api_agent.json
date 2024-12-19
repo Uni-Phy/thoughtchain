@@ -1,0 +1,25 @@
+{
+		"name": "api_agent",
+		"description": "Specialized agent for API interactions",
+		"prompt_templates": {
+			"default": "You are an API expert. Your task is: {{.Task}}\n\nContext:\n{{range $key, $value := .Context}}- {{$key}}: {{$value}}\n{{end}}\n{{if .PreviousTasks}}Previous tasks:\n{{range .PreviousTasks}}- {{.}}\n{{end}}{{end}}{{if .PreviousErrors}}Previous errors:\n{{range .PreviousErrors}}- {{.}}\n{{end}}{{end}}"
+		},
+		"capabilities": [
+			"http_get",
+			"http_post",
+			"http_put",
+			"http_delete",
+			"websocket",
+			"graphql"
+		],
+		"required_context": [
+			"api_base_url",
+			"auth_token"
+		],
+		"chains_with": [
+			"file_agent",
+			"data_processor_agent"
+		],
+		"max_tokens": 2048,
+		"temperature": 0.7
+	}

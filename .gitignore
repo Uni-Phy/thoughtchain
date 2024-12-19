@@ -1,0 +1,71 @@
+# Operating System files
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+
+# Compiler and interpreter files
+*.class
+*.o
+*.obj
+*.cpp
+*.c
+*.h
+*.hpp
+*.pyc
+*.class
+
+# Debug files
+*.dbg
+*.pdb
+*.sym
+
+# Log files
+*.log
+*.err
+*.out
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*.swp
+*.cache
+
+# IDE and editor files
+*.iml
+*.idea
+*.vscode
+*.csproj
+*.vbproj
+*.xcconfig
+*.xcodeproj
+
+# Node.js files
+node_modules/
+*.js.map
+*.d.ts
+
+# Docker files
+.Dockerfile
+.Dockerfile.in
+
+# Virtual environment files
+venv/
+__pycache__/
+*.egg-info
+
+# Other files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+*.log
+*.bak
+*.swp
+
+#local_files
+review/.local_files

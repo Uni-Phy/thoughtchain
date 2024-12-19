@@ -1,0 +1,25 @@
+{
+		"name": "file_agent",
+		"description": "Specialized agent for file system operations",
+		"prompt_templates": {
+			"default": "You are a file system expert. Your task is: {{.Task}}\n\nContext:\n{{range $key, $value := .Context}}- {{$key}}: {{$value}}\n{{end}}\n{{if .PreviousTasks}}Previous tasks:\n{{range .PreviousTasks}}- {{.}}\n{{end}}{{end}}{{if .PreviousErrors}}Previous errors:\n{{range .PreviousErrors}}- {{.}}\n{{end}}{{end}}"
+		},
+		"capabilities": [
+			"read_file",
+			"write_file",
+			"delete_file",
+			"list_directory",
+			"create_directory",
+			"move_file",
+			"copy_file"
+		],
+		"required_context": [
+			"working_directory"
+		],
+		"chains_with": [
+			"api_agent",
+			"text_processor_agent"
+		],
+		"max_tokens": 2048,
+		"temperature": 0.7
+	}

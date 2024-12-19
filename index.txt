@@ -1,0 +1,41 @@
+.
+├── README.md
+├── agent
+│   ├── agent.go
+│   ├── agent_test.go
+│   ├── config.go
+│   ├── manager.go
+│   ├── prompt.go
+│   └── selector.go
+├── api
+│   ├── handlers.go
+│   ├── handlers_test.go
+│   └── test.txt
+├── cline_task_dec-19-2024_8-23-34-pm.md
+├── cmd
+│   └── server
+├── config
+│   └── agents
+│       ├── api_agent.json
+│       ├── default_agent.json
+│       ├── file_agent.json
+│       └── text_processor_agent.json
+├── data
+│   ├── app.log
+│   ├── time.json
+│   ├── user.json
+│   └── weather.json
+├── go.mod
+├── llms
+│   ├── client.go
+│   ├── llms_test.go
+│   ├── main.go
+│   └── test.txt
+├── main.go
+├── tasks
+│   ├── task.go
+│   └── task_test.go
+├── test.txt
+└── thoughtchain.log
+
+10 directories, 29 files

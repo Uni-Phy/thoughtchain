@@ -1,0 +1,24 @@
+{
+		"name": "text_processor_agent",
+		"description": "Specialized agent for text processing and analysis",
+		"prompt_templates": {
+			"default": "You are a text processing expert. Your task is: {{.Task}}\n\nContext:\n{{range $key, $value := .Context}}- {{$key}}: {{$value}}\n{{end}}\n{{if .PreviousTasks}}Previous tasks:\n{{range .PreviousTasks}}- {{.}}\n{{end}}{{end}}{{if .PreviousErrors}}Previous errors:\n{{range .PreviousErrors}}- {{.}}\n{{end}}{{end}}"
+		},
+		"capabilities": [
+			"text_analysis",
+			"sentiment_analysis",
+			"language_detection",
+			"summarization",
+			"translation"
+		],
+		"required_context": [
+			"input_text",
+			"target_language"
+		],
+		"chains_with": [
+			"file_agent",
+			"api_agent"
+		],
+		"max_tokens": 4096,
+		"temperature": 0.8
+	}
