@@ -1,6 +1,6 @@
 # ThoughtChain
 
-ThoughtChain is a sophisticated Go library for executing sequences of tasks using specialized agents powered by LLM-based thought generation. It provides a flexible and extensible system for handling various types of operations including filesystem tasks, API interactions, and text processing.
+ThoughtChain is a sophisticated Go library for executing sequences of tasks using specialized agents powered by LLM-based thought generation. It provides a flexible and extensible system for handling various types of operations including filesystem tasks, API interactions, text processing, and code review.
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ ThoughtChain is a sophisticated Go library for executing sequences of tasks usin
 ## Installation
 
 ```bash
-go get github.com/yourusername/thoughtchain
+go get github.com/Uni-Phy/thoughtchain/
 ```
 
 ## Environment Setup
@@ -25,18 +25,69 @@ export OPENROUTER_API_KEY=your_api_key_here
 mkdir -p config/agents
 ```
 
-## Running the Server
+## Code Review Tool
+
+ThoughtChain includes a powerful code review tool that can analyze Go code and provide detailed feedback using LLM-based analysis.
+
+### Running Code Reviews
 
 ```bash
-go run main.go
+# Review current directory
+go run cmd/review/main.go
+
+# Review specific directory
+go run cmd/review/main.go -dir=/path/to/project
+
+# Specify output directory
+go run cmd/review/main.go -dir=/path/to/project -output=review-output
+
+# Use specific API key
+go run cmd/review/main.go -api-key=your-key-here
 ```
 
-The server will start on port 8080 by default. You can change the port by setting the PORT environment variable:
-```bash
-PORT=3000 go run main.go
+### Review Output
+
+The code review tool generates several artifacts:
+
+1. `structure.md`: Detailed documentation of the code structure
+2. `structure.json`: Machine-readable code structure data
+3. `review.md`: Overall code review feedback
+4. `{filename}.review.md`: File-specific suggestions for each source file
+
+### Review Coverage
+
+The tool analyzes:
+- Package structure
+- File organization
+- Function definitions and relationships
+- Type definitions and relationships
+- Documentation completeness
+- Code complexity
+- Function calls and dependencies
+
+### Example Review Output
+
+```markdown
+# Code Review Feedback
+
+## Code Organization
+- Clear package structure following Go conventions
+- Good separation of concerns between packages
+- Consider grouping related functionality in 'internal' package
+
+## Documentation
+- Most functions well documented
+- Missing package documentation in 'api' package
+- Consider adding more examples in documentation
+
+## Suggestions
+1. Add context.Context parameter to key functions
+2. Implement proper error wrapping
+3. Add more unit tests for edge cases
+4. Consider using interfaces for better abstraction
 ```
 
-## Features
+## Server Features
 
 ### Agent System
 - **Specialized Agents**: Pre-configured agents for different types of tasks
@@ -62,9 +113,22 @@ PORT=3000 go run main.go
   - GraphQL integration
 - **Error Handling**: Comprehensive error tracking and recovery
 
-## Usage Examples
+## Server Usage
 
-### File Operations
+### Starting the Server
+
+```bash
+go run main.go
+```
+
+The server provides the following endpoints:
+- `/thoughtchain`: Main endpoint for task execution
+- `/health`: Health check endpoint
+- `/agents`: List available agents
+
+### Making Requests
+
+#### File Operations
 ```bash
 curl -X POST http://localhost:8080/thoughtchain \
   -H "Content-Type: application/json" \
@@ -81,7 +145,7 @@ curl -X POST http://localhost:8080/thoughtchain \
   }'
 ```
 
-### API Operations
+#### API Operations
 ```bash
 curl -X POST http://localhost:8080/thoughtchain \
   -H "Content-Type: application/json" \
@@ -108,6 +172,7 @@ curl -X POST http://localhost:8080/thoughtchain \
 ```
 
 ### Response Format
+
 ```json
 {
   "thought_cloud": [
@@ -124,71 +189,6 @@ curl -X POST http://localhost:8080/thoughtchain \
       "success": true
     }
   ],
-  "conclusion": "Successfully created and wrote to configuration file"
-}
-```
-
-## Development
-
-### Running Tests
-```bash
-go test ./... -v
-```
-
-### Adding New Agents
-
-1. Create a new agent configuration file in `config/agents`:
-```json
-{
-  "name": "custom_agent",
-  "description": "Custom agent for specific tasks",
-  "prompt_templates": {
-    "default": "Process the following task: {{.Task}}"
-  },
-  "capabilities": ["custom_operation"],
-  "required_context": [],
-  "chains_with": ["file_agent"],
-  "max_tokens": 1000,
-  "temperature": 0.7
-}
-```
-
-2. The agent will be automatically loaded when the server starts.
-
-### Architecture
-
-1. **Agent Manager**: Handles agent loading and lifecycle
-2. **Semantic Selector**: Chooses appropriate agents for tasks
-3. **Prompt Configurator**: Manages prompt generation and templating
-4. **Task Executor**: Handles task execution and error management
-5. **State Manager**: Maintains agent state and history
-
-### Flow
-
-1. Request received → Parse task description
-2. Select appropriate agent(s) based on task
-3. Configure prompt using agent's template
-4. Generate thoughts using LLM
-5. Execute task sequence
-6. Track results and update state
-7. Generate conclusion
-8. Return response
-
-## Endpoints
-
-- `POST /thoughtchain`: Execute thought chains
-- `GET /health`: Health check endpoint
-- `GET /agents`: List available agents
-
-## Error Handling
-
-The system provides detailed error information in the response:
-```json
-{
-  "task_results": [
-    {
-      "description": "API call: GET https://api.example.com/users",
-      "success": false,
       "error": "failed to execute request: connection refused"
     }
   ]
