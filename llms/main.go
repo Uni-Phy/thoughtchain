@@ -34,7 +34,6 @@ func HandleThoughtChain(llmClient LLMClient) http.HandlerFunc {
         
 		if err != nil {
             http.Error(w, "Failed to generate thoughts", http.StatusInternalServerError)
-			
 			return
 		}
 
@@ -50,14 +49,19 @@ func HandleThoughtChain(llmClient LLMClient) http.HandlerFunc {
 				return
 			}
 
-			taskChain.AddTask(t)
+			// Generate a unique task ID
+			taskID := fmt.Sprintf("task-%d", i+1)
+			
+			// Add task to chain with ID and dependencies
+			taskChain.AddTask(taskID, t, taskDef.DependsOn)
 			sequence = append(sequence, t.Description())
 
 			// Execute each task individually to track results
 			err = t.Execute(ctx)
 			result := tasks.TaskResult{
+				ID:          taskID,
 				Description: t.Description(),
-				Success:    err == nil,
+				Success:     err == nil,
 			}
 			if err != nil {
 				result.Error = err.Error()
@@ -66,9 +70,6 @@ func HandleThoughtChain(llmClient LLMClient) http.HandlerFunc {
 				thoughts = append(thoughts, fmt.Sprintf("Successfully executed task %d", i+1))
 			}
 			taskResults = append(taskResults, result)
-
-
-
 		}
 
 		// Generate conclusion based on execution results

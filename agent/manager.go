@@ -15,34 +15,25 @@ func (am *AgentManager) LoadAgents() error {
 	}
 
 	for _, file := range files {
-		var config AgentConfig
+		var agent Agent
 		data, err := os.ReadFile(file)
 		if err != nil {
 			return fmt.Errorf("failed to read config file %s: %w", file, err)
 		}
 
-		if err := json.Unmarshal(data, &config); err != nil {
+		if err := json.Unmarshal(data, &agent); err != nil {
 			return fmt.Errorf("failed to parse config file %s: %w", file, err)
 		}
 
-		agent := &Agent{
-			Name:            config.Name,
-			Description:     config.Description,
-			PromptTemplates: config.PromptTemplates,
-			Capabilities:    config.Capabilities,
-			RequiredContext: config.RequiredContext,
-			ChainsWith:      config.ChainsWith,
-			MaxTokens:       config.MaxTokens,
-			Temperature:     config.Temperature,
-		}
-
-		am.Agents[agent.Name] = agent
+		am.Agents[agent.Name] = &agent
 		am.StateManager.States[agent.Name] = &AgentState{
 			CurrentContext: make(map[string]interface{}),
 			PromptHistory: make([]string, 0),
 			TaskHistory:   make([]string, 0),
 			Errors:        make([]error, 0),
 		}
+
+		am.Logger.Printf("Loaded agent: %s", agent.Name)
 	}
 
 	return nil

@@ -55,7 +55,7 @@ func (o *OpenRouterLLMClient) makeRequest(ctx context.Context, messages []map[st
     o.Logger.Printf("Making request to OpenRouter API: %v", messages)
 	requestBody, err := json.Marshal(map[string]interface{}{
 		"messages": messages,
-		"model":    "meta-llama/llama-3.2-3b-instruct:free",
+		"model":    "google/gemini-2.0-flash-exp:free",
 	})
 	if err != nil {
 		o.Logger.Printf("Failed to encode request body: %v", err)
