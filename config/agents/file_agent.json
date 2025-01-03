@@ -1,5 +1,6 @@
 {
 		"name": "file_agent",
+		"http_path": "/agent/file",
 		"description": "Specialized agent for file system operations",
 		"prompt_templates": {
 			"default": "You are a file system expert. Your task is: {{.Task}}\n\nContext:\n{{range $key, $value := .Context}}- {{$key}}: {{$value}}\n{{end}}\n{{if .PreviousTasks}}Previous tasks:\n{{range .PreviousTasks}}- {{.}}\n{{end}}{{end}}{{if .PreviousErrors}}Previous errors:\n{{range .PreviousErrors}}- {{.}}\n{{end}}{{end}}"
